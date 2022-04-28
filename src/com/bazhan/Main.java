@@ -37,7 +37,7 @@ public class Main {
         new Thread(task2).start();*/
 
 
-        var synchBank=new Bank(NACCOUNTS,INITIAL_BALANCE);
+        /**var synchBank=new Bank(NACCOUNTS,INITIAL_BALANCE);
         for (int i=0; i<NACCOUNTS; i++){
             int fromAccount=i;
             Runnable r=()->{
@@ -46,6 +46,27 @@ public class Main {
                         int toAccount=(int) (synchBank.size()*Math.random());
                         double amount=MAX_AMOUNT*Math.random();
                         synchBank.transfer(fromAccount, toAccount, amount);
+                        Thread.sleep((int) (DELAY*Math.random()));
+                    }
+                }
+                catch (InterruptedException e){}
+            };
+            var t=new Thread(r);
+            t.start();
+        }*/
+
+
+
+        //Синхронизация средствами Java
+        var synchBankTwo=new BankSynch(NACCOUNTS,INITIAL_BALANCE);
+        for (int i=0; i<NACCOUNTS; i++){
+            int fromAccount=i;
+            Runnable r=()->{
+                try {
+                    while (true){
+                        int toAccount=(int) (synchBankTwo.size()*Math.random());
+                        double amount=MAX_AMOUNT*Math.random();
+                        synchBankTwo.transfer(fromAccount, toAccount, amount);
                         Thread.sleep((int) (DELAY*Math.random()));
                     }
                 }
